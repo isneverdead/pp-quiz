@@ -297,8 +297,8 @@ export default function Home() {
   // --- VIEW 1: LOBBY UTAMA ---
   if (!activeMatch) {
     return (
-      <div className='font-sans flex flex-col items-center justify-center min-h-screen bg-slate-900 text-slate-100 p-6'>
-        <div className='w-full max-w-md text-center'>
+      <div className='font-sans flex flex-col items-center justify-between min-h-screen bg-slate-900 text-slate-100 p-6'>
+        <div className='w-full max-w-md text-center my-auto'>
           <h1 className='text-5xl font-black tracking-tight text-white mb-2'>
             PP Quiz
           </h1>
@@ -355,6 +355,13 @@ export default function Home() {
             )}
           </div>
         </div>
+        {/* Watermark */}
+        <footer className='text-center text-[11px] font-medium tracking-wider text-slate-600 mt-8'>
+          made with love by{' '}
+          <span className='text-slate-500 font-semibold'>
+            KSCS Engineering Team
+          </span>
+        </footer>
       </div>
     );
   }
@@ -362,8 +369,8 @@ export default function Home() {
   // --- VIEW 2: INPUT USERNAME ---
   if (!isJoined) {
     return (
-      <div className='font-sans flex flex-col items-center justify-center min-h-screen bg-slate-900 text-slate-100 p-6'>
-        <div className='bg-slate-800/80 border border-slate-700/60 p-8 rounded-2xl shadow-xl w-full max-w-sm backdrop-blur-sm'>
+      <div className='font-sans flex flex-col items-center justify-between min-h-screen bg-slate-900 text-slate-100 p-6'>
+        <div className='bg-slate-800/80 border border-slate-700/60 p-8 rounded-2xl shadow-xl w-full max-w-sm backdrop-blur-sm my-auto'>
           <button
             onClick={() => setActiveMatch(null)}
             className='text-xs font-semibold text-slate-400 hover:text-white mb-4 transition block'
@@ -404,6 +411,13 @@ export default function Home() {
             )}
           </button>
         </div>
+        {/* Watermark */}
+        <footer className='text-center text-[11px] font-medium tracking-wider text-slate-600 mt-8'>
+          made with love by{' '}
+          <span className='text-slate-500 font-semibold'>
+            KSCS Engineering Team
+          </span>
+        </footer>
       </div>
     );
   }
@@ -411,8 +425,8 @@ export default function Home() {
   // --- VIEW 3: GAME OVER / FINISHED MATCH ---
   if (activeMatch.status === 'FINISHED') {
     return (
-      <div className='font-sans flex flex-col items-center justify-center min-h-screen bg-slate-950 text-slate-100 p-6'>
-        <div className='w-full max-w-md text-center'>
+      <div className='font-sans flex flex-col items-center justify-between min-h-screen bg-slate-950 text-slate-100 p-6'>
+        <div className='w-full max-w-md text-center my-auto'>
           <div className='inline-block bg-red-500/10 text-red-400 text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full border border-red-500/20 mb-3'>
             Pertandingan Selesai
           </div>
@@ -453,166 +467,183 @@ export default function Home() {
             Kembali ke Lobby Utama
           </button>
         </div>
+        {/* Watermark */}
+        <footer className='text-center text-[11px] font-medium tracking-wider text-slate-600 mt-8'>
+          made with love by{' '}
+          <span className='text-slate-500 font-semibold'>
+            KSCS Engineering Team
+          </span>
+        </footer>
       </div>
     );
   }
 
   // --- VIEW 4: SCREEN UTAMA (GAMEPLAY + LIVE LEADERBOARD) ---
   return (
-    <div className='font-sans min-h-screen bg-slate-950 text-slate-100 p-4 md:p-8 grid grid-cols-1 lg:grid-cols-3 gap-6 max-w-7xl mx-auto items-start'>
-      {/* Kolom Kuis & Aturan Giliran Multiplayer */}
-      <div className='lg:col-span-2 min-h-[420px] flex flex-col'>
-        {questions.length > 0 ? (
-          isMyTurn ? (
-            /* KAMU SEDANG MENDAPAT GILIRAN BERTANYA */
-            <div className='bg-slate-900 border border-indigo-500/30 p-6 md:p-8 rounded-2xl shadow-xl flex-1 flex flex-col justify-between'>
-              <div className='w-full'>
-                <div className='flex justify-between items-center mb-8'>
-                  <span className='text-xs bg-indigo-500/20 text-indigo-300 font-mono font-bold px-3 py-1.5 rounded-lg border border-indigo-500/30 animate-pulse tracking-wide'>
-                    ⚡ GILIRAN KAMU BERMAIN
-                  </span>
-                  <span className='text-xs font-semibold text-slate-400 bg-slate-950 px-3 py-1.5 rounded-lg border border-slate-800 tracking-wide'>
-                    Skor Anda:{' '}
-                    <strong className='text-emerald-400 font-mono text-sm ml-1 font-bold'>
-                      {myScoreValue}
-                    </strong>
-                  </span>
-                </div>
+    <div className='font-sans min-h-screen bg-slate-950 text-slate-100 p-4 md:p-8 flex flex-col justify-between max-w-7xl mx-auto'>
+      <div className='grid grid-cols-1 lg:grid-cols-3 gap-6 items-start w-full'>
+        {/* Kolom Kuis & Aturan Giliran Multiplayer */}
+        <div className='lg:col-span-2 min-h-[420px] flex flex-col'>
+          {questions.length > 0 ? (
+            isMyTurn ? (
+              /* KAMU SEDANG MENDAPAT GILIRAN BERTANYA */
+              <div className='bg-slate-900 border border-indigo-500/30 p-6 md:p-8 rounded-2xl shadow-xl flex-1 flex flex-col justify-between'>
+                <div className='w-full'>
+                  <div className='flex justify-between items-center mb-8'>
+                    <span className='text-xs bg-indigo-500/20 text-indigo-300 font-mono font-bold px-3 py-1.5 rounded-lg border border-indigo-500/30 animate-pulse tracking-wide'>
+                      ⚡ GILIRAN KAMU BERMAIN
+                    </span>
+                    <span className='text-xs font-semibold text-slate-400 bg-slate-950 px-3 py-1.5 rounded-lg border border-slate-800 tracking-wide'>
+                      Skor Anda:{' '}
+                      <strong className='text-emerald-400 font-mono text-sm ml-1 font-bold'>
+                        {myScoreValue}
+                      </strong>
+                    </span>
+                  </div>
 
-                <h2 className='text-xl md:text-2xl font-bold text-white tracking-tight leading-relaxed mb-8'>
-                  {questions[currentQuizIndex].pertanyaan}
-                </h2>
+                  <h2 className='text-xl md:text-2xl font-bold text-white tracking-tight leading-relaxed mb-8'>
+                    {questions[currentQuizIndex].pertanyaan}
+                  </h2>
 
-                <div className='space-y-3'>
-                  {questions[currentQuizIndex].opsi.map((opsi, idx) => (
-                    <button
-                      key={idx}
-                      onClick={() => handleAnswer(opsi)}
-                      className='w-full text-left p-4 rounded-xl border border-slate-800 bg-slate-950/40 hover:bg-slate-800 hover:border-indigo-500 text-slate-300 hover:text-white font-semibold text-sm transition-all duration-150'
-                    >
-                      {opsi}
-                    </button>
-                  ))}
+                  <div className='space-y-3'>
+                    {questions[currentQuizIndex].opsi.map((opsi, idx) => (
+                      <button
+                        key={idx}
+                        onClick={() => handleAnswer(opsi)}
+                        className='w-full text-left p-4 rounded-xl border border-slate-800 bg-slate-950/40 hover:bg-slate-800 hover:border-indigo-500 text-slate-300 hover:text-white font-semibold text-sm transition-all duration-150'
+                      >
+                        {opsi}
+                      </button>
+                    ))}
+                  </div>
                 </div>
               </div>
-            </div>
-          ) : (
-            /* SCREEN HOLD (MENUNGGU GILIRAN PLAYER LAIN SEKALIGUS MENAMPILKAN QUOTE) */
-            <div
-              className={`flex-1 flex flex-col justify-center items-center text-center p-8 rounded-2xl border transition-all duration-300 ${
-                lastAnswerStatus === 'CORRECT'
-                  ? 'bg-emerald-950/80 border-emerald-500/30 text-emerald-100'
-                  : lastAnswerStatus === 'WRONG'
-                    ? 'bg-rose-950/80 border-rose-500/30 text-rose-100'
-                    : 'bg-slate-900 border-slate-800 text-slate-400'
-              }`}
-            >
-              {/* Tampilan Quote Elegan */}
-              <div className='max-w-md my-auto px-4 py-6'>
-                <span className='text-[10px] font-bold uppercase tracking-widest opacity-60 block mb-3'>
-                  {lastAnswerStatus === 'CORRECT'
-                    ? '✨ Apresiasi Untukmu'
+            ) : (
+              /* SCREEN HOLD (MENUNGGU GILIRAN PLAYER LAIN SEKALIGUS MENAMPILKAN QUOTE) */
+              <div
+                className={`flex-1 flex flex-col justify-center items-center text-center p-8 rounded-2xl border transition-all duration-300 ${
+                  lastAnswerStatus === 'CORRECT'
+                    ? 'bg-emerald-950/80 border-emerald-500/30 text-emerald-100'
                     : lastAnswerStatus === 'WRONG'
-                      ? '💡 Catatan Refleksi'
-                      : 'Kuis Dimulai'}
-                </span>
+                      ? 'bg-rose-950/80 border-rose-500/30 text-rose-100'
+                      : 'bg-slate-900 border-slate-800 text-slate-400'
+                }`}
+              >
+                {/* Tampilan Quote Elegan */}
+                <div className='max-w-md my-auto px-4 py-6'>
+                  <span className='text-[10px] font-bold uppercase tracking-widest opacity-60 block mb-3'>
+                    {lastAnswerStatus === 'CORRECT'
+                      ? '✨ Apresiasi Untukmu'
+                      : lastAnswerStatus === 'WRONG'
+                        ? '💡 Catatan Refleksi'
+                        : 'Kuis Dimulai'}
+                  </span>
 
-                <p className='text-lg md:text-xl font-medium text-white italic leading-relaxed tracking-wide mb-4'>
-                  "
-                  {currentHoldQuote ||
-                    'Bersiaplah untuk giliran kamu berikutnya.'}
-                  "
+                  <p className='text-lg md:text-xl font-medium text-white italic leading-relaxed tracking-wide mb-4'>
+                    "
+                    {currentHoldQuote ||
+                      'Bersiaplah untuk giliran kamu berikutnya.'}
+                    "
+                  </p>
+
+                  <div className='w-12 h-[2px] bg-white/20 mx-auto mb-6' />
+                </div>
+
+                <p className='text-xs font-medium text-slate-400 leading-relaxed mb-6'>
+                  Sekarang saatnya giliran{' '}
+                  <span className='font-bold text-indigo-400'>
+                    @{currentTurnPlayer || 'Pemain Lain'}
+                  </span>{' '}
+                  untuk menjawab soal mereka.
                 </p>
 
-                <div className='w-12 h-[2px] bg-white/20 mx-auto mb-6' />
+                <div className='flex items-center gap-2 bg-slate-950/60 px-4 py-2.5 rounded-xl border border-slate-800/40'>
+                  <div className='w-2 h-2 rounded-full bg-amber-500 animate-ping' />
+                  <span className='text-xs font-mono tracking-wider uppercase text-amber-400 font-bold'>
+                    Menunggu Giliran Selanjutnya...
+                  </span>
+                </div>
               </div>
-
-              <p className='text-xs font-medium text-slate-400 leading-relaxed mb-6'>
-                Sekarang saatnya giliran{' '}
-                <span className='font-bold text-indigo-400'>
-                  @{currentTurnPlayer || 'Pemain Lain'}
-                </span>{' '}
-                untuk menjawab soal mereka.
+            )
+          ) : (
+            <div className='flex flex-col items-center justify-center flex-1 py-12 bg-slate-900 border border-slate-800 rounded-2xl'>
+              <div className='w-8 h-8 border-2 border-indigo-500/20 border-t-indigo-500 rounded-full animate-spin mb-3' />
+              <p className='text-sm font-medium text-slate-500 animate-pulse'>
+                Menghubungkan bank soal kuis...
               </p>
+            </div>
+          )}
+        </div>
 
-              <div className='flex items-center gap-2 bg-slate-950/60 px-4 py-2.5 rounded-xl border border-slate-800/40'>
-                <div className='w-2 h-2 rounded-full bg-amber-500 animate-ping' />
-                <span className='text-xs font-mono tracking-wider uppercase text-amber-400 font-bold'>
-                  Menunggu Giliran Selanjutnya...
+        {/* Kolom Realtime Leaderboard & Info Room */}
+        <div className='bg-slate-900 border border-slate-800/80 p-6 rounded-2xl shadow-xl flex flex-col justify-between lg:sticky lg:top-8'>
+          <div>
+            <div className='flex justify-between items-center mb-5 border-b border-slate-800 pb-3'>
+              <div>
+                <h2 className='text-sm font-bold text-white uppercase tracking-wider'>
+                  Papan Peringkat
+                </h2>
+                <p className='text-[10px] text-slate-500 font-mono font-bold mt-0.5'>
+                  ROOM: #{activeMatch.id.substring(0, 6).toUpperCase()}
+                </p>
+              </div>
+              <div className='flex items-center gap-1.5'>
+                <span className='w-2 h-2 rounded-full bg-emerald-500 animate-pulse' />
+                <span className='text-[10px] font-mono text-emerald-500 uppercase tracking-widest font-black'>
+                  Realtime
                 </span>
               </div>
             </div>
-          )
-        ) : (
-          <div className='flex flex-col items-center justify-center flex-1 py-12 bg-slate-900 border border-slate-800 rounded-2xl'>
-            <div className='w-8 h-8 border-2 border-indigo-500/20 border-t-indigo-500 rounded-full animate-spin mb-3' />
-            <p className='text-sm font-medium text-slate-500 animate-pulse'>
-              Menghubungkan bank soal kuis...
-            </p>
-          </div>
-        )}
-      </div>
 
-      {/* Kolom Realtime Leaderboard & Info Room */}
-      <div className='bg-slate-900 border border-slate-800/80 p-6 rounded-2xl shadow-xl flex flex-col justify-between lg:sticky lg:top-8'>
-        <div>
-          <div className='flex justify-between items-center mb-5 border-b border-slate-800 pb-3'>
-            <div>
-              <h2 className='text-sm font-bold text-white uppercase tracking-wider'>
-                Papan Peringkat
-              </h2>
-              <p className='text-[10px] text-slate-500 font-mono font-bold mt-0.5'>
-                ROOM: #{activeMatch.id.substring(0, 6).toUpperCase()}
-              </p>
-            </div>
-            <div className='flex items-center gap-1.5'>
-              <span className='w-2 h-2 rounded-full bg-emerald-500 animate-pulse' />
-              <span className='text-[10px] font-mono text-emerald-500 uppercase tracking-widest font-black'>
-                Realtime
-              </span>
-            </div>
-          </div>
-
-          <div className='space-y-2 max-h-[320px] overflow-y-auto pr-1'>
-            {scores.map((s, idx) => {
-              const isPlayerTurnNow = currentTurnPlayer === s.username;
-              return (
-                <div
-                  key={s.id}
-                  className={`flex justify-between items-center p-3 rounded-xl transition-all ${
-                    s.username === username
-                      ? 'bg-indigo-600/10 border border-indigo-500/30 text-white'
-                      : 'bg-slate-950/40 border border-slate-850 text-slate-400'
-                  } ${isPlayerTurnNow ? 'ring-1 ring-amber-500/50' : ''}`}
-                >
-                  <span className='text-xs font-semibold truncate max-w-[150px] flex items-center gap-1'>
-                    <span className='font-mono font-bold text-slate-600 mr-0.5'>
-                      #{idx + 1}
-                    </span>
-                    {s.username}
-                    {s.username === username && ' (Anda)'}
-                    {isPlayerTurnNow && (
-                      <span className='text-[9px] bg-amber-500/20 text-amber-400 px-1 py-0.2 rounded font-sans font-bold ml-1'>
-                        🔴 Giliran
+            <div className='space-y-2 max-h-[320px] overflow-y-auto pr-1'>
+              {scores.map((s, idx) => {
+                const isPlayerTurnNow = currentTurnPlayer === s.username;
+                return (
+                  <div
+                    key={s.id}
+                    className={`flex justify-between items-center p-3 rounded-xl transition-all ${
+                      s.username === username
+                        ? 'bg-indigo-600/10 border border-indigo-500/30 text-white'
+                        : 'bg-slate-950/40 border border-slate-850 text-slate-400'
+                    } ${isPlayerTurnNow ? 'ring-1 ring-amber-500/50' : ''}`}
+                  >
+                    <span className='text-xs font-semibold truncate max-w-[150px] flex items-center gap-1'>
+                      <span className='font-mono font-bold text-slate-600 mr-0.5'>
+                        #{idx + 1}
                       </span>
-                    )}
-                  </span>
-                  <span className='text-xs font-mono font-bold text-slate-200 bg-slate-900 px-2 py-0.5 rounded border border-slate-800'>
-                    {s.score} pts
-                  </span>
-                </div>
-              );
-            })}
+                      {s.username}
+                      {s.username === username && ' (Anda)'}
+                      {isPlayerTurnNow && (
+                        <span className='text-[9px] bg-amber-500/20 text-amber-400 px-1 py-0.2 rounded font-sans font-bold ml-1'>
+                          🔴 Giliran
+                        </span>
+                      )}
+                    </span>
+                    <span className='text-xs font-mono font-bold text-slate-200 bg-slate-900 px-2 py-0.5 rounded border border-slate-800'>
+                      {s.score} pts
+                    </span>
+                  </div>
+                );
+              })}
+            </div>
           </div>
-        </div>
 
-        <button
-          onClick={closeMatch}
-          className='mt-8 w-full bg-red-950 hover:bg-red-900 border border-red-800/40 text-red-400 font-bold py-3 rounded-xl text-xs uppercase tracking-wider transition-all'
-        >
-          Selesaikan Pertandingan
-        </button>
+          <button
+            onClick={closeMatch}
+            className='mt-8 w-full bg-red-950 hover:bg-red-900 border border-red-800/40 text-red-400 font-bold py-3 rounded-xl text-xs uppercase tracking-wider transition-all'
+          >
+            Selesaikan Pertandingan
+          </button>
+        </div>
       </div>
+
+      {/* Watermark */}
+      <footer className='text-center text-[11px] font-medium tracking-wider text-slate-600 mt-12 w-full'>
+        made with love by{' '}
+        <span className='text-slate-500 font-semibold'>
+          KSCS Engineering Team
+        </span>
+      </footer>
     </div>
   );
 }
