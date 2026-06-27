@@ -23,12 +23,21 @@ interface Question {
   opsi: string[];
 }
 
+interface QuotesBank {
+  pujian: string[];
+  motivasi: string[];
+}
+
 export default function Home() {
   // State Flow & Data
   const [matches, setMatches] = useState<Match[]>([]);
   const [activeMatch, setActiveMatch] = useState<Match | null>(null);
   const [scores, setScores] = useState<Score[]>([]);
   const [questions, setQuestions] = useState<Question[]>([]);
+  const [quotesBank, setQuotesBank] = useState<QuotesBank>({
+    pujian: [],
+    motivasi: [],
+  });
 
   // User State
   const [username, setUsername] = useState('');
@@ -37,10 +46,11 @@ export default function Home() {
   const [myScoreId, setMyScoreId] = useState<string | null>(null);
   const [myScoreValue, setMyScoreValue] = useState(0);
 
-  // Status Jawaban Terakhir untuk Layar Hold (null, 'CORRECT', 'WRONG')
+  // Status & Teks Quote untuk Layar Hold
   const [lastAnswerStatus, setLastAnswerStatus] = useState<
     'CORRECT' | 'WRONG' | null
   >(null);
+  const [currentHoldQuote, setCurrentHoldQuote] = useState<string>('');
 
   // UX State (Loading & Error)
   const [isLoading, setIsLoading] = useState(false);
@@ -184,11 +194,12 @@ export default function Home() {
 
       if (scoreData) setMyScoreId(scoreData.id);
 
-      // 4. Ambil bank soal dari Apps Script
+      // 4. Ambil bank soal dan quotes sekaligus dari Apps Script
       const res = await fetch(process.env.NEXT_PUBLIC_APPSCRIPT_URL!);
       const json = await res.json();
       if (json.status === 'success') {
-        setQuestions(json.data);
+        setQuestions(json.data.questions);
+        setQuotesBank(json.data.quotes);
       }
 
       setIsJoined(true);
@@ -206,10 +217,21 @@ export default function Home() {
     let isCorrect = selected === currentQuestion.jawaban;
     let newScore = myScoreValue;
 
+    // Ambil quote acak berdasarkan hasil jawaban
     if (isCorrect) {
       newScore += 10;
       setMyScoreValue(newScore);
       setLastAnswerStatus('CORRECT');
+
+      const pujianList = quotesBank.pujian;
+      if (pujianList && pujianList.length > 0) {
+        const randomQuote =
+          pujianList[Math.floor(Math.random() * pujianList.length)];
+        setCurrentHoldQuote(randomQuote);
+      } else {
+        setCurrentHoldQuote('Luar biasa, jawaban kamu tepat!');
+      }
+
       if (myScoreId) {
         await supabase
           .from('scores')
@@ -218,6 +240,17 @@ export default function Home() {
       }
     } else {
       setLastAnswerStatus('WRONG');
+
+      const motivasiList = quotesBank.motivasi;
+      if (motivasiList && motivasiList.length > 0) {
+        const randomQuote =
+          motivasiList[Math.floor(Math.random() * motivasiList.length)];
+        setCurrentHoldQuote(randomQuote);
+      } else {
+        setCurrentHoldQuote(
+          'Jangan berkecil hati, coba lagi di giliran berikutnya!',
+        );
+      }
     }
 
     // Alihkan giliran ke player berikutnya secara berputar (Round-Robin)
@@ -246,10 +279,12 @@ export default function Home() {
     setIsJoined(false);
     setUsername('');
     setQuestions([]);
+    setQuotesBank({ pujian: [], motivasi: [] });
     setCurrentQuizIndex(0);
     setMyScoreValue(0);
     setMyScoreId(null);
     setLastAnswerStatus(null);
+    setCurrentHoldQuote('');
     setErrorMessage(null);
     fetchActiveMatches();
   };
@@ -268,7 +303,7 @@ export default function Home() {
             PP Quiz
           </h1>
           <p className='text-slate-400 text-sm font-medium tracking-wide mb-8'>
-            Kerja mulu jangan lupa minum
+            Realtime Turn-Based Multiplayer Trivia
           </p>
 
           <button
@@ -462,36 +497,37 @@ export default function Home() {
               </div>
             </div>
           ) : (
-            /* SCREEN HOLD (MENUNGGU GILIRAN PLAYER LAIN) */
+            /* SCREEN HOLD (MENUNGGU GILIRAN PLAYER LAIN SEKALIGUS MENAMPILKAN QUOTE) */
             <div
               className={`flex-1 flex flex-col justify-center items-center text-center p-8 rounded-2xl border transition-all duration-300 ${
                 lastAnswerStatus === 'CORRECT'
-                  ? 'bg-emerald-950/90 border-emerald-500/40 text-emerald-100'
+                  ? 'bg-emerald-950/80 border-emerald-500/30 text-emerald-100'
                   : lastAnswerStatus === 'WRONG'
-                    ? 'bg-rose-950/90 border-rose-500/40 text-rose-100'
+                    ? 'bg-rose-950/80 border-rose-500/30 text-rose-100'
                     : 'bg-slate-900 border-slate-800 text-slate-400'
               }`}
             >
-              {lastAnswerStatus === 'CORRECT' && (
-                <div className='mb-4 bg-emerald-500 text-slate-950 w-12 h-12 rounded-full flex items-center justify-center text-2xl font-black'>
-                  ✓
-                </div>
-              )}
-              {lastAnswerStatus === 'WRONG' && (
-                <div className='mb-4 bg-rose-500 text-white w-12 h-12 rounded-full flex items-center justify-center text-2xl font-black'>
-                  ✗
-                </div>
-              )}
+              {/* Tampilan Quote Elegan */}
+              <div className='max-w-md my-auto px-4 py-6'>
+                <span className='text-[10px] font-bold uppercase tracking-widest opacity-60 block mb-3'>
+                  {lastAnswerStatus === 'CORRECT'
+                    ? '✨ Apresiasi Untukmu'
+                    : lastAnswerStatus === 'WRONG'
+                      ? '💡 Catatan Refleksi'
+                      : 'Kuis Dimulai'}
+                </span>
 
-              <h2 className='text-2xl font-black text-white mb-2 tracking-tight'>
-                {lastAnswerStatus === 'CORRECT'
-                  ? 'Jawaban Anda Benar!'
-                  : lastAnswerStatus === 'WRONG'
-                    ? 'Jawaban Anda Salah!'
-                    : 'Bersiaplah!'}
-              </h2>
+                <p className='text-lg md:text-xl font-medium text-white italic leading-relaxed tracking-wide mb-4'>
+                  "
+                  {currentHoldQuote ||
+                    'Bersiaplah untuk giliran kamu berikutnya.'}
+                  "
+                </p>
 
-              <p className='text-sm font-medium max-w-sm mb-6 opacity-80 leading-relaxed'>
+                <div className='w-12 h-[2px] bg-white/20 mx-auto mb-6' />
+              </div>
+
+              <p className='text-xs font-medium text-slate-400 leading-relaxed mb-6'>
                 Sekarang saatnya giliran{' '}
                 <span className='font-bold text-indigo-400'>
                   @{currentTurnPlayer || 'Pemain Lain'}
